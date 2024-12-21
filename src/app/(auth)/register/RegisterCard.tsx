@@ -1,6 +1,6 @@
 "use client";
 
-import { RegisterUser } from "@/app/actions/RegisterActions";
+import { RegisterUser } from "@/app/actions/authActions";
 import {
   registerSchema,
   registerSchemaType,

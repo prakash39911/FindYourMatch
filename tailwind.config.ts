@@ -9,7 +9,9 @@ export default {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: { vertical_center: "calc(100vh - 64px)" },
+    },
   },
   darkMode: "class",
   plugins: [nextui()],

@@ -1,5 +1,6 @@
 "use server";
 
+import { authOptions } from "@/lib/authOptions";
 import prisma from "@/lib/PrismaClient";
 import {
   registerSchema,
@@ -9,6 +10,7 @@ import { ActionResult } from "@/types";
 import { User } from "@prisma/client";
 
 import bcrypt from "bcrypt";
+import { getServerSession } from "next-auth";
 
 // Server Action to Register user.
 export const RegisterUser = async (
@@ -46,3 +48,12 @@ export const RegisterUser = async (
     return { status: "error", error: "Something went Wrong" };
   }
 };
+
+export async function getCurrentUserId() {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
+  if (!userId) throw new Error("Unauthorised");
+
+  return userId;
+}
