@@ -5,6 +5,7 @@ import {
   registerSchema,
   registerSchemaType,
 } from "@/lib/schemas/RegisterSchema";
+import { handleFormServerErrors } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, CardBody, CardHeader, Input } from "@nextui-org/react";
 import React from "react";
@@ -24,18 +25,11 @@ export const RegisterCard = () => {
   });
 
   const onSubmit = async (data: registerSchemaType) => {
-    const isUserRegistered = await RegisterUser(data);
-    if (isUserRegistered.status === "success") {
+    const result = await RegisterUser(data);
+    if (result.status === "success") {
       toast.success("User Registered Successfully");
     } else {
-      if (Array.isArray(isUserRegistered.error)) {
-        isUserRegistered.error.forEach((e) => {
-          const fieldName = e.path.join(".") as "email" | "name" | "password";
-          setError(fieldName, { message: e.message });
-        });
-      } else {
-        setError("root.serverError", { message: isUserRegistered.error });
-      }
+      handleFormServerErrors(result, setError);
     }
   };
 

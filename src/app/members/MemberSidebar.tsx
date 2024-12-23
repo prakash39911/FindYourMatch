@@ -1,6 +1,6 @@
 "use client";
 
-import { CalculateAge } from "@/lib/utils";
+import { CalculateAge, transformImageUrl } from "@/lib/utils";
 import {
   Button,
   Card,
@@ -16,18 +16,11 @@ import React from "react";
 
 type props = {
   member: Member;
+  navLinks: { name: string; href: string }[];
 };
 
-export default function MemberSidebar({ member }: props) {
+export default function MemberSidebar({ member, navLinks }: props) {
   const pathname = usePathname();
-
-  const basePath = `/members/${member.userId}`;
-
-  const NavLink = [
-    { name: "Profile", href: `${basePath}` },
-    { name: "Photos", href: `${basePath}/photos` },
-    { name: "Chat", href: `${basePath}/chat` },
-  ];
 
   return (
     <>
@@ -35,7 +28,7 @@ export default function MemberSidebar({ member }: props) {
         <Image
           height={200}
           width={200}
-          src={member.image || "/images/user.png"}
+          src={transformImageUrl(member.image) || "/images/user.png"}
           alt="User Profile main image"
           className="rounded-full mt-6 aspect-square object-cover"
         />
@@ -50,7 +43,7 @@ export default function MemberSidebar({ member }: props) {
           </div>
           <Divider className="my-3" />
           <nav className="flex flex-col p-4 ml-4 text-2xl gap-4">
-            {NavLink.map((link) => (
+            {navLinks.map((link) => (
               <Link
                 href={link.href}
                 key={link.name}

@@ -1,5 +1,6 @@
 "use client";
 
+import { transformImageUrl } from "@/lib/utils";
 import {
   Avatar,
   Dropdown,
@@ -8,14 +9,13 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from "@nextui-org/react";
-import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 type userType = {
-  user: Session["user"];
+  user: { name: string | null; image: string | null } | null;
 };
 
 export default function UserDropdown({ user }: userType) {
@@ -25,7 +25,10 @@ export default function UserDropdown({ user }: userType) {
     <>
       <Dropdown placement="bottom-start">
         <DropdownTrigger>
-          <Avatar as="button" src={user?.image || "/images/user.png"} />
+          <Avatar
+            as="button"
+            src={transformImageUrl(user?.image) || "/images/user.png"}
+          />
         </DropdownTrigger>
         <DropdownMenu aria-label="User actions menu" variant="flat">
           <DropdownSection showDivider>

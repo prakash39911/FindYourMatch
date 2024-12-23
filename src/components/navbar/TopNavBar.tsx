@@ -6,9 +6,11 @@ import NavLink from "./NavLink";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import UserDropdown from "./UserDropdown";
+import { getuserInfoForNav } from "@/app/actions/userActions";
 
 export const TopNavBar = async () => {
   const session = await getServerSession(authOptions);
+  const userInfo = session?.user && (await getuserInfoForNav());
   return (
     <div>
       <Navbar
@@ -40,8 +42,8 @@ export const TopNavBar = async () => {
         </NavbarContent>
 
         <NavbarContent justify="end">
-          {session?.user ? (
-            <UserDropdown user={session?.user} />
+          {userInfo ? (
+            <UserDropdown user={userInfo} />
           ) : (
             <>
               <Button as={Link} href="/login">

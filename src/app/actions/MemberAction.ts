@@ -23,7 +23,7 @@ export async function GetMembers() {
   }
 }
 
-export async function GetMemberDetails(userId: string) {
+export async function getMemberByUserId(userId: string) {
   try {
     return await prisma.member.findUnique({
       where: {
