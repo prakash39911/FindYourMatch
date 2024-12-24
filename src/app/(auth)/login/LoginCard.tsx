@@ -29,9 +29,15 @@ export const LoginCard = () => {
         password: data.password,
         redirect: false,
       });
-      toast.success("Login Successfull");
-      router.push("/");
-      router.refresh();
+      console.log(result);
+
+      if (result?.ok) {
+        toast.success("Login Successfull");
+        router.push("/");
+        router.refresh();
+      } else {
+        toast.error("Wrong Credentials");
+      }
     } catch (error) {
       toast.error(error as string);
     }
