@@ -8,7 +8,8 @@ export default async function Messages({
 }: {
   searchParams: { container: string };
 }) {
-  const messages = await getMessagesByContainer(searchParams.container);
+  const params = await searchParams;
+  const messages = await getMessagesByContainer(params.container);
 
   return (
     <div className="grid grid-cols-10 gap-2 mx-3 h-[80vh] mt-10">
@@ -16,7 +17,7 @@ export default async function Messages({
         <MessageSidebar />
       </div>
       <div className="col-span-7">
-        <MessageTable messages={messages} />
+        <MessageTable initialMessages={messages} />
       </div>
     </div>
   );

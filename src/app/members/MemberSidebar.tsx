@@ -1,5 +1,6 @@
 "use client";
 
+import PresenceDot from "@/components/PresenceDot";
 import { CalculateAge, transformImageUrl } from "@/lib/utils";
 import {
   Button,
@@ -33,16 +34,21 @@ export default function MemberSidebar({ member, navLinks }: props) {
           className="rounded-full mt-6 aspect-square object-cover"
         />
         <CardBody>
-          <div className="flex flex-col items-center">
-            <div className="text-2xl">
-              {member.name}, {CalculateAge(member.dateOfBirth)}
+          <div className="flex flex-col items-center overflow-hidden">
+            <div className="flex">
+              <div className="text-2xl">
+                {member.name}, {CalculateAge(member.dateOfBirth)}
+              </div>
+              <div>
+                <PresenceDot member={member} />
+              </div>
             </div>
             <div className="text-sm text-neutral-500">
               {member.city}, {member.country}
             </div>
           </div>
-          <Divider className="my-3" />
-          <nav className="flex flex-col p-4 ml-4 text-2xl gap-4">
+          <Divider className="my-3 overflow-hidden" />
+          <nav className="flex flex-col p-4 ml-4 text-2xl gap-4 overflow-hidden">
             {navLinks.map((link) => (
               <Link
                 href={link.href}

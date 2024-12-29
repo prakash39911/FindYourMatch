@@ -3,8 +3,8 @@
 import { MessageDTO } from "@/types";
 import React, { useEffect, useRef } from "react";
 import clsx from "clsx";
-import { Avatar } from "@nextui-org/react";
-import { transformImageUrl } from "@/lib/utils";
+import { timeAgo, transformImageUrl } from "@/lib/utils";
+import PresenceAvatar from "@/components/PresenceAvatar";
 
 type Props = {
   message: MessageDTO;
@@ -23,11 +23,12 @@ export default function MessageBox({ message, currentUserId }: Props) {
 
   const renderAvatar = () => {
     return (
-      <Avatar
-        name={message.senderName}
-        className="self-end"
-        src={transformImageUrl(message.senderImage) || "/images/user.png"}
-      />
+      <div className="self-end">
+        <PresenceAvatar
+          userId={message.senderId}
+          src={transformImageUrl(message.senderImage) || "/images/user.png"}
+        />
+      </div>
     );
   };
 
@@ -44,7 +45,9 @@ export default function MessageBox({ message, currentUserId }: Props) {
       })}
     >
       {message.dateRead && message.recipientId !== currentUserId ? (
-        <span className="text-xs text-black text-italic">(Read 4 min ago)</span>
+        <span className="text-xs text-black text-italic">
+          (Read {timeAgo(message.dateRead)})
+        </span>
       ) : (
         <div></div>
       )}

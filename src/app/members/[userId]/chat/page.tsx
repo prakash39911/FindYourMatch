@@ -2,31 +2,31 @@ import CardInnerWrapper from "@/components/CardInnerWrapper";
 import React from "react";
 import ChatForm from "./ChatForm";
 import { getMessageThread } from "@/app/actions/messageAction";
-import MessageBox from "./MessageBox";
 import { getCurrentUserId } from "@/app/actions/authActions";
+import MessageList from "./MessageList";
+import { createChatId } from "@/lib/utils";
 
 export default async function ChatPage({
   params,
 }: {
   params: { userId: string };
 }) {
-  const messages = await getMessageThread(params.userId);
+  const recipientId = await params;
+  const messages = await getMessageThread(recipientId.userId);
   const userId = await getCurrentUserId();
+  const chatId = createChatId(userId, recipientId.userId);
 
-  const body =
-    messages.length === 0 ? (
-      "No messages to diplay"
-    ) : (
-      <div>
-        {messages.map((message) => (
-          <MessageBox
-            key={message.id}
-            message={message}
-            currentUserId={userId}
-          />
-        ))}
-      </div>
-    );
-
-  return <CardInnerWrapper header="Chat" body={body} footer={<ChatForm />} />;
+  return (
+    <CardInnerWrapper
+      header="Chat"
+      body={
+        <MessageList
+          initialMessages={messages}
+          currentUserId={userId}
+          chatId={chatId}
+        />
+      }
+      footer={<ChatForm />}
+    />
+  );
 }

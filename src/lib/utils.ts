@@ -1,4 +1,4 @@
-import { differenceInYears, format } from "date-fns";
+import { differenceInYears, format, formatDistance } from "date-fns";
 import { FieldValues, Path, UseFormSetError } from "react-hook-form";
 import { ZodIssue } from "zod";
 
@@ -7,7 +7,11 @@ export function CalculateAge(dob: Date) {
 }
 
 export function formatShortDateTime(date: Date) {
-  return format(date, "dd MM yy h:mm:a");
+  return format(date, "dd MMM yy h:mm:a");
+}
+
+export function timeAgo(date: string) {
+  return formatDistance(new Date(date), new Date()) + " ago";
 }
 
 export function handleFormServerErrors<TFieldValues extends FieldValues>(
@@ -48,4 +52,8 @@ export function truncateString(text?: string | null, num = 50) {
   }
 
   return text.slice(0, num) + "...";
+}
+
+export function createChatId(a: string, b: string) {
+  return a > b ? `${b}-${a}` : `${a}-${b}`;
 }
