@@ -12,8 +12,9 @@ export default async function ListsPage({
     type: string;
   };
 }) {
+  const SearchParams = await searchParams;
   const likeId = await fetchCurrentUserLikeIds();
-  const members = await fetchLikedMembers(searchParams.type);
+  const members = await fetchLikedMembers(SearchParams.type);
 
   return (
     <>

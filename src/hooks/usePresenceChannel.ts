@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import usePresenceStore from "./usePresenceStore";
 import { Channel, Members } from "pusher-js";
 import { pusherClient } from "@/lib/pusher";
+import { updateLastActive } from "@/app/actions/MemberAction";
 
 export const usePresenceChannel = () => {
   const set = usePresenceStore((state) => state.set);
@@ -39,6 +40,7 @@ export const usePresenceChannel = () => {
         "pusher:subscription_succeeded",
         async (members: Members) => {
           handleSetMembers(Object.keys(members.members));
+          await updateLastActive();
         }
       );
 
