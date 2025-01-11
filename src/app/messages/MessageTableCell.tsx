@@ -1,7 +1,8 @@
+import AppModal from "@/components/AppModal";
 import PresenceAvatar from "@/components/PresenceAvatar";
 import { truncateString } from "@/lib/utils";
 import { MessageDTO } from "@/types";
-import { Button } from "@nextui-org/react";
+import { Button, ButtonProps, useDisclosure } from "@nextui-org/react";
 import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 
@@ -21,6 +22,20 @@ export default function MessageTableCell({
   isDeleting,
 }: Props) {
   const cellValue = item[columnKey as keyof MessageDTO];
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const onConfirmDeleteMessage = () => {
+    deleteMessage(item);
+  };
+
+  const footerButtons: ButtonProps[] = [
+    { color: "default", onPress: onClose, children: "Cancel" },
+    {
+      color: "secondary",
+      onPress: onConfirmDeleteMessage,
+      children: "Confirm",
+    },
+  ];
 
   switch (columnKey) {
     case "recipientName":
@@ -37,17 +52,32 @@ export default function MessageTableCell({
     case "text":
       return <div>{truncateString(cellValue, 70)}</div>;
     case "created":
-      return cellValue;
+      return <div>{cellValue}</div>;
     default:
       return (
-        <Button
-          isIconOnly
-          variant="light"
-          onPress={() => deleteMessage(item)}
-          isLoading={isDeleting}
-        >
-          <AiFillDelete size={24} className="text-danger" />
-        </Button>
+        <>
+          <Button
+            isIconOnly
+            variant="light"
+            onPress={() => onOpen}
+            isLoading={isDeleting}
+          >
+            <AiFillDelete size={24} className="text-danger" />
+          </Button>
+
+          <AppModal
+            isOpen={isOpen}
+            onclose={onClose}
+            header="Please Confirm this Action"
+            body={
+              <div>
+                Are you sure, you want to delete this message? this can not be
+                undone.
+              </div>
+            }
+            footerButtons={footerButtons}
+          />
+        </>
       );
   }
 }

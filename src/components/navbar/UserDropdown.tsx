@@ -11,7 +11,6 @@ import {
 } from "@nextui-org/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 type userType = {
@@ -19,8 +18,6 @@ type userType = {
 };
 
 export default function UserDropdown({ user }: userType) {
-  const router = useRouter();
-
   return (
     <>
       <Dropdown placement="bottom-start">
@@ -47,7 +44,6 @@ export default function UserDropdown({ user }: userType) {
           <DropdownItem
             onPress={() => {
               signOut();
-              router.push("/");
             }}
             key="delete"
             className="text-danger"

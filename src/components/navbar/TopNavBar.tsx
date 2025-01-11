@@ -49,9 +49,10 @@ export const TopNavBar = async () => {
             <div>FindMatch</div>
           </NavbarBrand>
           <NavbarContent justify="center">
-            {links.map((item) => (
-              <NavLink href={item.href} name={item.label} key={item.label} />
-            ))}
+            {session &&
+              links.map((item) => (
+                <NavLink href={item.href} name={item.label} key={item.label} />
+              ))}
           </NavbarContent>
 
           <NavbarContent justify="end">

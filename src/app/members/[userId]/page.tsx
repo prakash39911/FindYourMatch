@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 export default async function MemberDetailsPage({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
   const { userId } = await params;
   const member = await getMemberByUserId(userId);

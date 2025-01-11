@@ -1,7 +1,7 @@
 "use client";
 
 import { useRole } from "@/hooks/useRole";
-import { Button, Image } from "@nextui-org/react";
+import { Button, Image, useDisclosure } from "@nextui-org/react";
 import { Photo } from "@prisma/client";
 import { ImCheckmark } from "react-icons/im";
 import { ImCross } from "react-icons/im";
@@ -12,6 +12,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { approvePhoto, rejectPhoto } from "@/app/actions/adminActions";
+import AppModal from "./AppModal";
 
 type Props = {
   photo: Photo | null;
@@ -19,8 +20,8 @@ type Props = {
 
 export default function MemberImage({ photo }: Props) {
   const role = useRole();
-
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (!photo) return null;
 
@@ -43,7 +44,7 @@ export default function MemberImage({ photo }: Props) {
   };
 
   return (
-    <div>
+    <div className="cursor-pointer" onClick={onOpen}>
       {photo?.publicId ? (
         <CldImage
           alt="Image of member"
@@ -93,6 +94,36 @@ export default function MemberImage({ photo }: Props) {
           </Button>
         </div>
       )}
+
+      <AppModal
+        imageModal={true}
+        isOpen={isOpen}
+        onclose={onClose}
+        body={
+          <>
+            {photo?.publicId ? (
+              <CldImage
+                alt="Image of member"
+                src={photo.publicId}
+                width={750}
+                height={750}
+                gravity="faces"
+                className={clsx("rounded-2xl", {
+                  "opacity-40": !photo.isApproved && role !== "ADMIN",
+                })}
+                priority
+              />
+            ) : (
+              <Image
+                width={750}
+                height={750}
+                src={photo?.url || "/images/user.png"}
+                alt="image of user"
+              />
+            )}
+          </>
+        }
+      />
     </div>
   );
 }

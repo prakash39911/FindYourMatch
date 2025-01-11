@@ -6,12 +6,10 @@ import MessageTable from "./MessageTable";
 export default async function Messages({
   searchParams,
 }: {
-  searchParams: { container: string };
+  searchParams: Promise<{ container: string }>;
 }) {
-  const params = await searchParams;
-  const { messages, nextCursor } = await getMessagesByContainer(
-    params.container
-  );
+  const { container } = await searchParams;
+  const { messages, nextCursor } = await getMessagesByContainer(container);
 
   return (
     <div className="grid grid-cols-10 gap-2 mx-3 h-[80vh] mt-10">

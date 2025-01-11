@@ -9,12 +9,12 @@ import { createChatId } from "@/lib/utils";
 export default async function ChatPage({
   params,
 }: {
-  params: { userId: string };
+  params: Promise<{ userId: string }>;
 }) {
-  const recipientId = await params;
-  const messages = await getMessageThread(recipientId.userId);
-  const userId = await getCurrentUserId();
-  const chatId = createChatId(userId, recipientId.userId);
+  const { userId } = await params;
+  const messages = await getMessageThread(userId);
+  const currentUserId = await getCurrentUserId();
+  const chatId = createChatId(currentUserId, userId);
 
   return (
     <CardInnerWrapper
@@ -22,7 +22,7 @@ export default async function ChatPage({
       body={
         <MessageList
           initialMessages={messages}
-          currentUserId={userId}
+          currentUserId={currentUserId}
           chatId={chatId}
         />
       }

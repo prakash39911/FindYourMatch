@@ -1,5 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import type { NextAuthOptions } from "next-auth";
 
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
@@ -84,4 +85,4 @@ export const authOptions = {
     },
   },
   session: { strategy: "jwt" },
-};
+} satisfies NextAuthOptions;

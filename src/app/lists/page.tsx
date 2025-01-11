@@ -5,16 +5,18 @@ import {
   fetchLikedMembers,
 } from "../actions/likeActions";
 
+export const dynamic = "force-dynamic";
+
 export default async function ListsPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     type: string;
-  };
+  }>;
 }) {
-  const SearchParams = await searchParams;
+  const { type } = await searchParams;
   const likeId = await fetchCurrentUserLikeIds();
-  const members = await fetchLikedMembers(SearchParams.type);
+  const members = await fetchLikedMembers(type);
 
   return (
     <>

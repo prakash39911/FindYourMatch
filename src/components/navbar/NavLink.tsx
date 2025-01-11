@@ -20,7 +20,9 @@ export default function NavLink({ href, name }: props) {
     <>
       <NavbarItem isActive={currentPath == href} as={Link} href={href}>
         <span>{name}</span>
-        {href === "/messages" && <span className="ml-1">({unreadCount})</span>}
+        {href === "/messages" && unreadCount > 0 && (
+          <span className="ml-1">({unreadCount})</span>
+        )}
       </NavbarItem>
     </>
   );

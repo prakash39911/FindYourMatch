@@ -9,10 +9,10 @@ import EmptyState from "@/components/EmptyState";
 export default async function Memberpage({
   searchParams,
 }: {
-  searchParams: GetMemberParams;
+  searchParams: Promise<GetMemberParams>;
 }) {
-  const SearchParams = await searchParams;
-  const { items: members, totalCount } = await GetMembers(SearchParams);
+  const params = await searchParams;
+  const { items: members, totalCount } = await GetMembers(params);
   const likedIds = await fetchCurrentUserLikeIds();
 
   return (
