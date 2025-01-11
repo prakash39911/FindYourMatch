@@ -1,12 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import React from "react";
-import Filter from "./Filter";
+import Filters from "./Filters";
 
 export default function FiltersWrapper() {
   const pathname = usePathname();
 
-  if (pathname === "/members") return <Filter />;
+  if (pathname === "/members") return <Filters />;
   else return null;
 }

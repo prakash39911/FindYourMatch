@@ -10,19 +10,15 @@ export const dynamic = "force-dynamic";
 export default async function ListsPage({
   searchParams,
 }: {
-  searchParams: Promise<{
-    type: string;
-  }>;
+  searchParams: Promise<{ type: string }>;
 }) {
   const { type } = await searchParams;
-  const likeId = await fetchCurrentUserLikeIds();
+  const likeIds = await fetchCurrentUserLikeIds();
   const members = await fetchLikedMembers(type);
 
   return (
-    <>
-      <div>
-        <ListsTab members={members} likeIds={likeId} />
-      </div>
-    </>
+    <div>
+      <ListsTab members={members} likeIds={likeIds} />
+    </div>
   );
 }
