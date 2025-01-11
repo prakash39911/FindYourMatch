@@ -15,12 +15,17 @@ export default async function middleware(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   const isLoggedIn = !!token;
-
   const { pathname } = req.nextUrl;
   const isProfileComplete = token?.profileComplete;
+  const isAdmin = token?.role === "ADMIN";
+  const isAdminRoute = pathname.startsWith("/admin");
 
-  if (publicRoutes.includes(pathname)) {
+  if (publicRoutes.includes(pathname) || isAdmin) {
     return NextResponse.next();
+  }
+
+  if (isAdminRoute && !isAdmin) {
+    return NextResponse.redirect(new URL("/", req.nextUrl.origin));
   }
 
   if (LoginRegisterRoutes.includes(pathname)) {
@@ -45,6 +50,6 @@ export default async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!api|_next/static|_next/image|images|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };

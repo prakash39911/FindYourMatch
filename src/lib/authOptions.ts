@@ -70,6 +70,7 @@ export const authOptions = {
 
         token.id = user.id;
         token.profileComplete = user.profileComplete;
+        token.role = user.role;
       }
       return token;
     },
@@ -77,6 +78,7 @@ export const authOptions = {
       if (token?.id) {
         session.user.id = token.id;
         session.user.profileComplete = token.profileComplete;
+        session.user.role = token.role;
       }
       return session;
     },

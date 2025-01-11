@@ -12,6 +12,17 @@ import FiltersWrapper from "./FiltersWrapper";
 export const TopNavBar = async () => {
   const session = await getServerSession(authOptions);
   const userInfo = session?.user && (await getuserInfoForNav());
+
+  const memberLinks = [
+    { href: "/members", label: "Matches" },
+    { href: "/lists", label: "Lists" },
+    { href: "/messages", label: "Messages" },
+  ];
+
+  const adminLinks = [{ href: "/admin/moderation", label: "Photo Moderation" }];
+
+  const links = session?.user.role === "ADMIN" ? adminLinks : memberLinks;
+
   return (
     <>
       <div>
@@ -38,9 +49,9 @@ export const TopNavBar = async () => {
             <div>FindMatch</div>
           </NavbarBrand>
           <NavbarContent justify="center">
-            <NavLink href="/members" name="members" />
-            <NavLink href="/lists" name="lists" />
-            <NavLink href="/messages" name="messages" />
+            {links.map((item) => (
+              <NavLink href={item.href} name={item.label} key={item.label} />
+            ))}
           </NavbarContent>
 
           <NavbarContent justify="end">

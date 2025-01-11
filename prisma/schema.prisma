@@ -42,6 +42,7 @@ model User {
   emailVerified   DateTime?
   image           String?
   profileComplete Boolean   @default(false)
+  role            Role      @default(MEMBER)
   accounts        Account[]
   member          Member?
   session         Session?
@@ -68,11 +69,12 @@ model Member {
 }
 
 model Photo {
-  id       String  @id @default(cuid())
-  url      String
-  publicId String?
-  memberId String
-  member   Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  id         String  @id @default(cuid())
+  url        String
+  publicId   String?
+  isApproved Boolean @default(false)
+  memberId   String
+  member     Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
 }
 
 model Like {
@@ -127,4 +129,9 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum Role {
+  ADMIN
+  MEMBER
 }
