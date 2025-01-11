@@ -1,5 +1,5 @@
 import React from "react";
-import { RegisterCard } from "./RegisterCard";
+import RegisterForm from "./RegisterForm";
 
 export default function Register() {
   return (
@@ -7,7 +7,7 @@ export default function Register() {
       className="flex justify-center items-center"
       style={{ height: "calc(100vh - 64px)" }}
     >
-      <RegisterCard />
+      <RegisterForm />
     </div>
   );
 }

@@ -28,13 +28,14 @@ export default async function RootLayout({
 }>) {
   const session = await getServerSession(authOptions);
   const userId = session?.user?.id || null;
+  const profileComplete = session?.user.profileComplete;
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Provider userId={userId}>
+        <Provider userId={userId} profileComplete={profileComplete}>
           <div>
             <TopNavBar />
           </div>

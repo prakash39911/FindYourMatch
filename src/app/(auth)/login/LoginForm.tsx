@@ -1,16 +1,19 @@
 "use client";
 
+import { SignInUser } from "@/app/actions/authActions";
 import { loginSchema, loginSchemaTypes } from "@/lib/schemas/LoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, CardBody, CardHeader, Input } from "@nextui-org/react";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { FaUserLock } from "react-icons/fa";
 import { toast } from "react-toastify";
+import SocialLogin from "./SocialLogin";
 
-export const LoginCard = () => {
+export const LoginForm = () => {
   const router = useRouter();
 
   const {
@@ -23,23 +26,24 @@ export const LoginCard = () => {
   });
 
   const onSubmit = async (data: loginSchemaTypes) => {
-    try {
-      const result = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-      console.log(result);
+    const result = await SignInUser(data);
 
-      if (result?.ok) {
-        toast.success("Login Successfull");
-        router.push("/");
-        router.refresh();
-      } else {
-        toast.error("Wrong Credentials");
-      }
-    } catch (error) {
-      toast.error(error as string);
+    if (result?.error === "Please verify your email address") {
+      toast.error("Please verify your email address to continue");
+    }
+
+    const signInresponse = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+
+    if (signInresponse?.ok) {
+      toast.success("Login Successfull");
+      router.push("/members");
+      router.refresh();
+    } else {
+      toast.error("Something went wrong");
     }
   };
 
@@ -77,6 +81,10 @@ export const LoginCard = () => {
           >
             Submit
           </Button>
+          <SocialLogin />
+          <div className="flex justify-center hover:underline text-sm">
+            <Link href="/forgot-password">Forgot Password?</Link>
+          </div>
         </form>
       </CardBody>
     </Card>

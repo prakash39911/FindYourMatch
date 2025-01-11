@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-const LoginRegisterRoutes = ["/login", "/register"];
+const LoginRegisterRoutes = [
+  "/login",
+  "/register",
+  "/register/success",
+  "/verify-email",
+  "/forgot-password",
+  "/reset-password",
+];
 const publicRoutes = ["/"];
 
 export default async function middleware(req: NextRequest) {
@@ -10,6 +17,7 @@ export default async function middleware(req: NextRequest) {
   const isLoggedIn = !!token;
 
   const { pathname } = req.nextUrl;
+  const isProfileComplete = token?.profileComplete;
 
   if (publicRoutes.includes(pathname)) {
     return NextResponse.next();
@@ -24,6 +32,12 @@ export default async function middleware(req: NextRequest) {
 
   if (!isLoggedIn && !publicRoutes.includes(pathname)) {
     return NextResponse.redirect(new URL("/login", req.nextUrl.origin));
+  }
+
+  if (isLoggedIn && !isProfileComplete && pathname !== "/complete-profile") {
+    return NextResponse.redirect(
+      new URL("/complete-profile", req.nextUrl.origin)
+    );
   }
 
   return NextResponse.next();

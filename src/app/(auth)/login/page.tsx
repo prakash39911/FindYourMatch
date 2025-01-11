@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginCard } from "./LoginCard";
+import { LoginForm } from "./LoginForm";
 
 export default function Login() {
   return (
@@ -7,7 +7,7 @@ export default function Login() {
       className="flex justify-center items-center"
       style={{ height: "calc(100vh - 64px)" }}
     >
-      <LoginCard />
+      <LoginForm />
     </div>
   );
 }

@@ -10,9 +10,11 @@ import React, { useCallback, useEffect, useRef } from "react";
 import { ToastContainer } from "react-toastify";
 
 export default function Provider({
+  profileComplete,
   children,
   userId,
 }: {
+  profileComplete: boolean;
   children: React.ReactNode;
   userId: string | null;
 }) {
@@ -34,8 +36,8 @@ export default function Provider({
     isUnreadCountSet.current = true;
   }, [setUnreadCount, userId]);
 
-  usePresenceChannel();
-  useNotificationChannel(userId);
+  usePresenceChannel(userId, profileComplete);
+  useNotificationChannel(userId, profileComplete);
   return (
     <>
       <SessionProvider>
