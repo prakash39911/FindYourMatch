@@ -41,7 +41,7 @@ export default function Filters() {
               size="sm"
               isIconOnly
               color={filters.gender.includes(value) ? "secondary" : "default"}
-              onClick={() => selectGender(value)}
+              onPress={() => selectGender(value)}
             >
               <Icon size={24} />
             </Button>

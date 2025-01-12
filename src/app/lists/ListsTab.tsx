@@ -52,7 +52,7 @@ export default function ListsTab({ members, likeIds }: Props) {
       {tabs.map((item) => {
         const isSelected = searchParams.get("type") === item.id;
         return isSelected ? (
-          <div>
+          <div key={item.id}>
             {members.length > 0 ? (
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-8">
                 {members.map((member) => (
