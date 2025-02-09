@@ -19,9 +19,9 @@ export async function POST(request: NextRequest) {
       user_id: session.user.id,
     };
 
-    const authResonse = pusherServer.authorizeChannel(socketId, channel, data);
+    const authResponse = pusherServer.authorizeChannel(socketId, channel, data);
 
-    return NextResponse.json(authResonse);
+    return NextResponse.json(authResponse);
   } catch (error) {
     console.log(error);
     NextResponse.json({
